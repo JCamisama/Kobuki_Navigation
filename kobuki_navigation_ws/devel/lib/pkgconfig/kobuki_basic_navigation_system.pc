@@ -1,0 +1,8 @@
+prefix=/home/jcamisama/ROS_Stuff/kobuki_navigation_ws/devel
+
+Name: kobuki_basic_navigation_system
+Description: Description of kobuki_basic_navigation_system
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

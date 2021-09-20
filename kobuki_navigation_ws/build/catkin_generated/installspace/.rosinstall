@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/jcamisama/ROS_Stuff/kobuki_navigation_ws/install/setup.sh
