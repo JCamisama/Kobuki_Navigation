@@ -5,6 +5,7 @@ import rospy
 from BasicCommandsMobileBase import BasicCommandsMobileBase
 from RotationManager import RotationManager
 from TranslationManager import TranslationManager
+from MapPositionCalculator import MapPositionCalculator
 
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg    import Imu
@@ -122,6 +123,30 @@ class MovementManager:
         else:
             self.orientationReference   = 0.0
             self.currentOrientationName = 'North'
+
+
+
+    def adjust_position(self, pOriginPosition, pTargetPosition, pBoxSideSize):
+        # Requires:
+        #    - pOriginPosition: 2-dimensional tuple containing integers ---> (int, int)
+        #    - pTargetPosition: 2-dimensional tuple containing integers ---> (int, int)
+        #    - pBoxSideSize: Size of the side of a square box, in meters
+        #    - Both positions must be traversable
+        # Ensures:
+        #    - Kobuki will have adjusted itself to the exact position designated in the map
+
+        positionCalculator = MapPositionCalculator()
+        targetDistance     = positionCalculator.getPositionInMap(pBoxSideSize, pOriginPosition, pTargetPosition)
+        # Row adjustment
+        self.rotationMan.perform_rotation('face_north')
+        translationAxis = self.get_direction_axis()
+        self.translationMan.perform_adjustment(translationAxis, targetDistance[0])
+        # Column adjustment
+        self.rotationMan.perform_rotation('face_west')
+        translationAxis = self.get_direction_axis()
+        self.translationMan.perform_adjustment(translationAxis, targetDistance[1])
+
+
 
 
 

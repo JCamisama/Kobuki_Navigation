@@ -6,7 +6,13 @@
       <excludeFolder url="file://$MODULE_DIR$/custom_venv" />
     </content>
     <content url="file:///opt/ros/kinetic/lib/python2.7/dist-packages" />
-    <orderEntry type="jdk" jdkName="Python 2.7 (src) (3)" jdkType="Python SDK" />
+    <orderEntry type="jdk" jdkName="Python 2.7 (src)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+  <component name="PackageRequirementsSettings">
+    <option name="requirementsPath" value="" />
+  </component>
+  <component name="TestRunnerService">
+    <option name="PROJECT_TEST_RUNNER" value="Nosetests" />
   </component>
 </module>

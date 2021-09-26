@@ -12,10 +12,11 @@ class TranslationManager:
         self.infoTranslationX = 0.0
         self.infoTranslationY = 0.0
 
-        self.normalVelocity  = 0.2  # m/s
-        self.adjustVelocity  = 0.02 # m/s
+        self.normalVelocity  = 0.2                    # m/s
+        self.adjustVelocity  = 0.02                   # m/s
         self.refDisplacement = pReferenceDisplacement # meters, reference distance
-        self.slowDownDist    = 0.03 # meters
+        self.slowDownDist    = 0.03                   # meters
+        self.adjustmentError = 0.001                  # meters
 
         self.movementCommander = pMovementCommander
 
@@ -62,5 +63,30 @@ class TranslationManager:
             velocity = self.normalVelocity
 
         return velocity
+
+
+
+    def perform_adjustment(self, pTranslationAxis, pTargetDistance):
+        # Requires:
+        #    - pTranslationAxis: Reference axis, X or Y
+        #    - pTargetDistance: Distance from the origin along the specified axis
+        # Ensures:
+        #    - Kobuki will have adjusted itself to the exact position along the indicated axis
+
+        rospy.sleep(1) # Allow the translation information to be updated
+        misplacementDistance = pTargetDistance - self.get_info_translation(pTranslationAxis)
+
+        while( abs(misplacementDistance) > self.adjustmentError ):
+            if(misplacementDistance > 0):
+                self.movementCommander.move_forward(self.adjustVelocity, self.velocityPublisher)
+            else:
+                self.movementCommander.move_backward(self.adjustVelocity, self.velocityPublisher)
+            misplacementDistance = pTargetDistance - self.get_info_translation(pTranslationAxis)
+
+        self.movementCommander.stop(self.velocityPublisher)
+        print("Done! Position in " + pTranslationAxis +": "
+            + str(self.get_info_translation(pTranslationAxis)) + " meters.")
+
+
 
 
