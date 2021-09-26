@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-import rospy
 from std_msgs.msg import String
 
 
@@ -18,8 +17,9 @@ class FlexmansysMsgHandler:
         orderSequenceString = noBracketsOrders.replace(' ', '').split(',') #
 
         for orderString in orderSequenceString:
-            newOrder = self.process_order_letterinteger_format(orderString)
-            if newOrder: orderSequence.append(newOrder)
+            if(orderString[0] != '-'):
+                newOrder = self.process_order_letterinteger_format(orderString)
+                if newOrder: orderSequence.append(newOrder)
 
         return orderSequence
 
@@ -36,9 +36,8 @@ class FlexmansysMsgHandler:
             for i in range(0, len(alphabet)):
                 charMapping[alphabet[i]] = i
 
-            orderSplitted = list( pOrderString.lower() )
-            row           = charMapping[ orderSplitted[0] ]
-            column        = int( orderSplitted[1] )
+            row           = charMapping[ pOrderString.lower()[0:1] ]
+            column        = int( pOrderString[1:] )
             order         = (row, column)
 
         return order

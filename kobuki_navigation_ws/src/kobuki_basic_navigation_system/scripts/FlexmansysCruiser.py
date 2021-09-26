@@ -33,8 +33,9 @@ class FlexmansysCruiser:
     def initialize_cruiser_position(self):
         # Requitements:
         #   - The initial position should always be traversable.
-        self.currentRow = 5 # int( input('\nInitial row position:\t') )
-        self.currentCol = 5 # int( input('Initial column position:\t') )
+        self.currentRow     = config.initialRow # int( input('\nInitial row position:\t') )
+        self.currentCol     = config.initialCol # int( input('Initial column position:\t') )
+        self.originPosition = (self.currentRow , self.currentCol)
         print('\n')
 
 
@@ -94,6 +95,9 @@ class FlexmansysCruiser:
                 self.currentOrientation = self.movementManager.perform_movement(movementSequence)
                 self.currentRow         = pTarget[0]
                 self.currentCol         = pTarget[1]
+                print("Adjustin position at " + str(pTarget) + "...")
+                self.movementManager.adjust_position(self.originPosition, pTarget, self.boxSize)
+                self.currentOrientation = self.movementManager.currentOrientationName
                 print("Navigation to " + str(pTarget) + " completed!")
         else:
             print("The target is outside of the map boundaries, it will be ignored.")
