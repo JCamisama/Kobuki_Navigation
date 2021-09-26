@@ -11,6 +11,7 @@ class TranslationManager:
 
         self.infoTranslationX = 0.0
         self.infoTranslationY = 0.0
+        self.obstacleFound    = False
 
         self.normalVelocity  = 0.2                    # m/s
         self.adjustVelocity  = 0.02                   # m/s
@@ -22,10 +23,11 @@ class TranslationManager:
 
 
 
-    def update_translation_info(self, pInfoTranslationX, pInfoTranslationY):
+    def update_translation_info(self, pInfoTranslationX, pInfoTranslationY, pObstacleFound):
 
         self.infoTranslationX = pInfoTranslationX
         self.infoTranslationY = pInfoTranslationY
+        self.obstacleFound    = pObstacleFound
 
 
 
@@ -36,12 +38,14 @@ class TranslationManager:
         initialPosition     = self.get_info_translation(pDirection)
         currentDisplacement = 0.0
 
-        while( currentDisplacement < self.refDisplacement ):
+        while( currentDisplacement < self.refDisplacement and not self.obstacleFound ):
             currentDisplacement = abs( self.get_info_translation(pDirection) - initialPosition )
             velocity            = self.selectVelocity(currentDisplacement)
             self.movementCommander.move_forward(velocity, self.velocityPublisher)
-
         self.movementCommander.stop(self.velocityPublisher)
+
+        if self.obstacleFound: self.notify_obstacle_found_and_stay_put()
+
         print("Done! Displacement: " + str(currentDisplacement) + " meters.")
 
 
@@ -89,4 +93,8 @@ class TranslationManager:
 
 
 
+    def notify_obstacle_found_and_stay_put(self):
+        while(True):
+            print("\nAn obstacle has been detected, please reset the whole setting and try again.\n")
+            rospy.sleep(5)
 

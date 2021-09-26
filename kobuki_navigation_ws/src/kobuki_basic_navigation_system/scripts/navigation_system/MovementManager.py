@@ -6,6 +6,7 @@ from BasicCommandsMobileBase import BasicCommandsMobileBase
 from RotationManager import RotationManager
 from TranslationManager import TranslationManager
 from MapPositionCalculator import MapPositionCalculator
+from kobuki_msgs.msg import BumperEvent
 
 from nav_msgs.msg import Odometry
 from sensor_msgs.msg    import Imu
@@ -32,10 +33,12 @@ class MovementManager:
         self.velocityPublisher = rospy.Publisher('mobile_base/commands/velocity', Twist, queue_size=10)
         self.odomSubscriber    = rospy.Subscriber('odom', Odometry, self.odometry_info_callback)
         self.imuSubscriber     = rospy.Subscriber('/mobile_base/sensors/imu_data', Imu, self.orientation_callback)
+        self.bumperSubscriber  = rospy.Subscriber('mobile_base/events/bumper', BumperEvent, self.bumper_callback)
 
 
 
     def initialize_managers(self, pLinearDistance):
+
         self.movementCommander = BasicCommandsMobileBase()
         self.rotationMan       = RotationManager(self.velocityPublisher, self.movementCommander)
         self.translationMan    = TranslationManager(pLinearDistance, self.velocityPublisher, self.movementCommander)
@@ -49,6 +52,7 @@ class MovementManager:
         self.currentOrientation     = 0.0
         self.orientationReference   = 0.0
         self.currentOrientationName = 'North'
+        self.obstacleFound          = False
 
 
 
@@ -58,7 +62,7 @@ class MovementManager:
         self.infoTranslationX  = pOdomData.pose.pose.position.x
         self.infoTranslationY  = pOdomData.pose.pose.position.y
 
-        self.translationMan.update_translation_info(self.infoTranslationX, self.infoTranslationY)
+        self.translationMan.update_translation_info(self.infoTranslationX, self.infoTranslationY, self.obstacleFound)
 
 
 
@@ -77,6 +81,11 @@ class MovementManager:
         self.rotationMan.update_orientation_info(self.currentOrientation)
         self.update_orientation_reference()
 
+
+
+    def bumper_callback(self, bumperMessage):
+
+        self.obstacleFound = bumperMessage.state
 
 
     def perform_movement(self, pCommandList):
@@ -145,8 +154,6 @@ class MovementManager:
         self.rotationMan.perform_rotation('face_west')
         translationAxis = self.get_direction_axis()
         self.translationMan.perform_adjustment(translationAxis, targetDistance[1])
-
-
 
 
 
