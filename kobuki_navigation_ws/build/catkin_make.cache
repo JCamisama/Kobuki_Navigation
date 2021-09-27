@@ -1,2 +1,0 @@
-kobuki_basic_navigation_system
--DCATKIN_DEVEL_PREFIX=/home/jcamisama/ROS_Stuff/kobuki_navigation_ws/devel -DCMAKE_INSTALL_PREFIX=/home/jcamisama/ROS_Stuff/kobuki_navigation_ws/install -G Unix Makefiles
