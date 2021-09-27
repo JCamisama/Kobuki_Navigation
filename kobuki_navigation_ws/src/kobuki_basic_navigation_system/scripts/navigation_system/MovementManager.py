@@ -154,6 +154,7 @@ class MovementManager:
         self.rotationMan.perform_rotation('face_west')
         translationAxis = self.get_direction_axis()
         self.translationMan.perform_adjustment(translationAxis, targetDistance[1])
+        self.rotationMan.perform_rotation('face_north')
 
 
 
