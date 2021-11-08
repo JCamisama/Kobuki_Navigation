@@ -95,8 +95,8 @@ class FlexmansysCruiser:
                 self.currentOrientation = self.movementManager.perform_movement(movementSequence)
                 self.currentRow         = pTarget[0]
                 self.currentCol         = pTarget[1]
-                print("Adjustin position at " + str(pTarget) + "...")
-                self.movementManager.adjust_position(self.originPosition, pTarget, self.boxSize)
+                # print("Adjustin position at " + str(pTarget) + "...")
+                # self.movementManager.adjust_position(self.originPosition, pTarget, self.boxSize)
                 self.currentOrientation = self.movementManager.currentOrientationName
                 print("Navigation to " + str(pTarget) + " completed!")
         else:
