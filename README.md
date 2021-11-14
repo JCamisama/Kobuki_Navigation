@@ -2,7 +2,7 @@
 
 <p>
 This repository contains the progress that's been made in the ROS Navigation part of FlexManSys. It consists of a ROS Node called FlexmansysCruiser that can receive and navigate to coordinates indicated in the topic
-"order" (The topic name can be specified in <i>kobuki_navigation_ws/src/kobuki_basic_navigation_system/scripts/cruiserconfig.py</i>) as well as all the python classes that conform the navigation system bundled in the navigation_system python package .
+"order" (The topic name can be specified in <i>kobuki_navigation_ws/src/kobuki_basic_navigation_system/scripts/cruiserconfig.py</i>) as well as all the python classes that constitue the navigation system bundled in the navigation_system python package .
 
 A publisher CLI has been included in the kobuki_basic_navigation_system ROS package (called FlexmansysTestPublisher.py) for experimental purposes.
 </p>
